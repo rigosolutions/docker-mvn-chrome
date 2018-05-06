@@ -16,7 +16,7 @@ jobs:
           name: Build and Push Image
           command: |
             docker build -t rigosolutions/mvn-chrome .
-            docker tag rigosolutions/saddleup-server:latest rigosolutions/saddleup-server:${CIRCLE_SHA1}
+            docker tag rigosolutions/mvn-chrome:latest rigosolutions/mvn-chrome:${CIRCLE_SHA1}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push
             docker logout
