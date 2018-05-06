@@ -40,11 +40,7 @@ workflows:
 
   build-and-push:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - develop
+      - build
 
 #  build-and-release:
 #    jobs:
