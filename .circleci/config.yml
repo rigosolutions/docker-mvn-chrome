@@ -2,7 +2,7 @@ defaults: &defaults
   docker:
     - image: circleci/openjdk:10-jdk-node
 
-    working_directory: ~/docker-mvn-chrome
+  working_directory: ~/docker-mvn-chrome
 
 version: 2
 jobs:
@@ -40,7 +40,11 @@ workflows:
 
   build-and-push:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
 
 #  build-and-release:
 #    jobs:
