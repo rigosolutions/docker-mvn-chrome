@@ -48,8 +48,7 @@ workflows:
   build-and-release:
     jobs:
       - build:
-         filters:
-           branches:
-             only:
-               - master
+          filters:
+             tags:
+               only: /v.*/
       - release
