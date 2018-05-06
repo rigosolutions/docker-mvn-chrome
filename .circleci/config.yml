@@ -17,6 +17,6 @@ jobs:
 
 workflows:
   version: 2
-  build-test-deploy:
+  build-image:
     jobs:
       - build
