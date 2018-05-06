@@ -46,11 +46,11 @@ workflows:
               only:
                 - develop
 
-  build-and-release:
-    jobs:
-      - release:
-          filters:
-            branches:
-              ignore: /.*/
-          tags:
-            only: /^v.*/
+#  build-and-release:
+#    jobs:
+#      - release:
+#          filters:
+#            branches:
+#              ignore: /.*/
+#          tags:
+#            only: /^v.*/
