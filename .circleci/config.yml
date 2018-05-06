@@ -2,6 +2,8 @@ defaults: &defaults
   docker:
     - image: circleci/openjdk:10-jdk-node
 
+    working_directory: ~/docker-mvn-chrome
+
 version: 2
 jobs:
   build:
@@ -11,12 +13,41 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build Image
+          name: Build and Push Image
           command: |
             docker build -t rigosolutions/mvn-chrome .
+            docker tag rigosolutions/saddleup-server:latest rigosolutions/saddleup-server:${CIRCLE_SHA1}
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push
+            docker logout
+
+  release:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: Build and Release Image
+          command: |
+            docker build -t rigosolutions/mvn-chrome:${CIRCLE_TAG} .
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push
+            docker logout
 
 workflows:
   version: 2
-  build-image:
+  build-and-push:
     jobs:
-      - build
+      - build:
+          filters:
+            tags:
+              only: develop
+
+  build-and-release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+          tags:
+            only: /^v.*/
+
