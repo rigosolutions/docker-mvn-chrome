@@ -42,7 +42,8 @@ workflows:
       - build:
           filters:
             tags:
-              only: develop
+              only:
+                develop
 
   build-and-release:
     jobs:
