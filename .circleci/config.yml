@@ -18,19 +18,21 @@ jobs:
             docker build -t rigosolutions/mvn-chrome .
             docker tag rigosolutions/mvn-chrome:latest rigosolutions/mvn-chrome:${CIRCLE_SHA1}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push
+            docker push rigosolutions/mvn-chrome:latest
             docker logout
 
   release:
     <<: *defaults
 
     steps:
-      - checkout
+      - attach_workspace:
+            at: ~/docker-mvn-chrome
       - setup_remote_docker
       - run:
           name: Build and Release Image
           command: |
-            docker build -t rigosolutions/mvn-chrome:${CIRCLE_TAG} .
+            docker build -t rigosolutions/mvn-chrome .
+            docker tag rigosolutions/mvn-chrome:latest rigosolutions/mvn-chrome:${CIRCLE_TAG}
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push
             docker logout
@@ -48,9 +50,11 @@ workflows:
 
 #  build-and-release:
 #    jobs:
+#      - build:
+#         filters:
+#           branches:
+#             only:
+#               - master
 #      - release:
-#          filters:
-#            branches:
-#              ignore: /.*/
 #          tags:
 #            only: /^v.*/
